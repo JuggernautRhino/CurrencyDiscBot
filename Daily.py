@@ -4,3 +4,4 @@ with open('daily', 'r') as f:
 def save_daily():
     with open('daily', 'w') as f:
         f.write(repr(daily))
+

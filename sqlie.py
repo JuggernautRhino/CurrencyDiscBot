@@ -9,3 +9,4 @@ def get_value(conn,c,user,amount):
         for row in c.fetchall():
             value = row[0]
         value = value + int(amount)
+        c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,user,))
