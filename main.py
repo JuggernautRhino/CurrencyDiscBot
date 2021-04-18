@@ -197,7 +197,25 @@ async def _numbergame(ctx,guess = 100, amount = 0):
 
 
 
-  
+@client.command(aliases=["aboveorbelow"])
+async def _aboveorbelow(ctx):
+    targetint = random.randint(0,99)
+    idd = ctx.message.author.id
+    startmessage = ("There is a number between 0 and 99, guess it. NOW. You get 10 attempts", targetint)
+    await ctx.send(startmessage)
+    attempt1 = await client.wait_for("message", check=lambda m: m.guild == ctx.guild)
+    #the first bit works now
+    #same issue I think
+    #nah its a different error
+    #AttributeError: 'Message' object has no attribute 'user'
+    if ctx.author.id == idd:
+        attempt1int = int(attempt1.content)
+        if attempt1int == targetint:
+            await ctx.send("GG, you got it.")
+        elif attempt1int > targetint:
+            await ctx.send("Too high, try again.")
+        elif attempt1int < targetint:
+            await ctx.send("Too low, try again.")
 
 
 
