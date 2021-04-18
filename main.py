@@ -14,7 +14,7 @@ import math
 
 client = commands.Bot(command_prefix = "^")
 client.remove_command('help')
-print("I dunn")
+print("I dunnoooo")
 
 @client.event
 async def on_ready():
