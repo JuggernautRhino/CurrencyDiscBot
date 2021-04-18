@@ -5,6 +5,9 @@ from Keep_alive import keep_alive
 import sqlite3
 from CreatingATable import tableCreation
 from Check_if_in_table import check
+from sqlie import connection, get_value
+import time 
+import math
 
 client = commands.Bot(command_prefix = "^")
 client.remove_command('help')
@@ -54,9 +57,8 @@ async def Add(ctx, amount):
         await ctx.send(f'You now have **{value}** in your account!')
         c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,userr,))
         conn.commit()
-    elif user != ("JuggernautRhino#0421"):
+    elif userr != ("JuggernautRhino#0421"):
         await ctx.send("nice try")
-
 
 @client.command(aliases=["sub"])
 async def Remove(ctx, amount):
@@ -71,7 +73,7 @@ async def Remove(ctx, amount):
         await ctx.send(f'You now have **{value}** in your account!')
         c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,userr,))
         conn.commit()
-    elif user != ("JuggernautRhino#0421"):
+    elif userr != ("JuggernautRhino#0421"):
         await ctx.send("nice try")
 
 @client.command()
@@ -82,9 +84,30 @@ async def all(ctx):
         c = conn.cursor()
         c.execute("SELECT * FROM users")
         await ctx.send(c.fetchall())
+        conn.close()
     elif user != ("JuggernautRhino#0421"):
         await ctx.send("required permissions not there")
         await ctx.send(user)
+
+
+
+@client.command()
+async def daily(ctx):
+    user = str(ctx.message.author)
+    conn,c = connection()
+    if (user in daily) and daily[user] > time.time():
+        waittime = daily[user] - time.time()
+        await ctx.send(f'Please wait **{math.floor(waittime/3600)}h {math.floor((waittime/60) % 60)}m** to use this again!')
+    else:
+        await ctx.send('You got 2500!')
+        get_value(conn,c,user,2500)
+        conn.commit
+        conn.close()
+        daily[user] = time.time() + 86400
+
+
+    save_daily()
+
 
 keep_alive()
 client.run(os.getenv('TOKEN'))
