@@ -11,10 +11,11 @@ from Monthly import *
 from Yearly import *
 import time 
 import math
+import random
 
 client = commands.Bot(command_prefix = "^")
 client.remove_command('help')
-print("I dunnoooo")
+ops = ["heads","tails"]
 
 @client.event
 async def on_ready():
@@ -26,11 +27,16 @@ async def on_ready():
 async def help(ctx):
     user = str(ctx.message.author)
     check(user)
-    em = discord.Embed(title = "Help", description = "**Do ^<Command> to use the command!**", colour = 0x8ceb34)
+    em = discord.Embed(title = "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀__Help__", description = "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀__**Do ^<Command> to use the command!**__", colour = 0x8ceb34)
     
-    em.add_field(name = "Owner", value = "add, sub, all")
-    em.add_field(name = "Currency", value = "bal, daily, monthly, yearly")
+    em.add_field(name = "⠀Owner", value = "add, sub, all⠀⠀⠀⠀⠀⠀⠀⠀")
+    em.add_field(name = "⠀⠀⠀⠀⠀Currency", value = "bal, daily, monthly, yearly⠀⠀⠀⠀⠀⠀⠀⠀")
+    em.add_field(name = "⠀Games", value = "guess, flip")
     await ctx.send(embed = em)
+
+@client.command(aliases=['ping'])
+async def _ping(ctx):
+    await ctx.send(f'**Pong!** In {round(client.latency * 1000)}ms')
 
 #Owner/bal commands
 
@@ -66,18 +72,16 @@ async def Add(ctx, amount):
 @client.command(aliases=["sub"])
 async def Remove(ctx, amount):
     userr = str(ctx.message.author)
-    if userr == ("JuggernautRhino#0421"):
-        conn = sqlite3.connect('Bal.db')
-        c = conn.cursor()
-        c.execute("SELECT balance FROM users WHERE user = ?",(userr,))
-        for row in c.fetchall():
-            value = row[0]
-        value = value - int(amount)
-        await ctx.send(f'You now have **{value}** in your account!')
-        c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,userr,))
-        conn.commit()
-    elif userr != ("JuggernautRhino#0421"):
-        await ctx.send("nice try")
+    conn = sqlite3.connect('Bal.db')
+    c = conn.cursor()
+    c.execute("SELECT balance FROM users WHERE user = ?",(userr,))
+    for row in c.fetchall():
+        value = row[0]
+    value = value - int(amount)
+    await ctx.send(f'You now have **{value}** in your account!')
+    c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,userr,))
+    conn.commit()
+
 
 @client.command()
 async def all(ctx):
@@ -104,7 +108,6 @@ async def _daily(ctx):
     else:
         await ctx.send('You got **2500!**')
         get_value(conn,c,user,2500)
-        conn.commit()
         conn.close()
         daily[user] = time.time() + 86400
 
@@ -120,7 +123,6 @@ async def _monthly(ctx):
     else:
         await ctx.send('You got **50000!**')
         get_value(conn,c,user,50000)
-        conn.commit()
         conn.close()
         monthly[user] = time.time() + 2592000
 
@@ -136,11 +138,68 @@ async def _yearly(ctx):
     else:
         await ctx.send('You got **50000!**')
         get_value(conn,c,user,50000)
-        conn.commit()
         conn.close()
         yearly[user] = time.time() + 31536000
 
     save_yearly()
+
+#games to make money start here
+
+@client.command(aliases=["Coin","Flip","flip"])
+async def coin(ctx,guess = "0", amount = 0):
+    user = str(ctx.message.author)
+    conn,c = connection()
+    result = random.choice(ops)
+    value = amount * 2
+    loss = amount * -1
+    if guess == "0":
+        await ctx.send("Please put either **heads** or **tails** after the command!")
+    elif amount == 0:
+        await ctx.send("Please specify an **amount of money** you would like to bet")
+    elif result == guess.lower():
+        get_value(conn,c,user,value)
+        await ctx.send(f'**You Got it Right!**')
+        time.sleep(0.1)
+        await ctx.send(f'**{value}** was added to your account')
+    elif result != guess.lower():
+        await ctx.send(f"You lost **{amount}**")
+        get_value(conn,c,user,loss)
+    else:
+        await ctx.send("I don't honestly know how this has happened but you broke it") #I love putting error messages just incase
+    conn.close()
+
+#understandably, it is pretty fun
+
+
+@client.command(aliases=["guess"])
+async def _numbergame(ctx,guess = 100, amount = 0):
+    user = str(ctx.message.author)
+    result = random.randint(0,99)
+    value = amount * 4
+    conn,c = connection()
+    loss = amount * -1   
+    if guess == 100:
+        await ctx.send("Please put your **guess** after the command")
+    elif amount == 0:
+        await ctx.send("Please specify an **amount of money** you would like to bet")
+    elif result == guess:
+        get_value(conn,c,user,value)
+        await ctx.send(f'**You Got it Right!**')
+        time.sleep(0.1)
+        await ctx.send(f'**{value}** was added to your account')
+    elif result != guess:
+        await ctx.send(f'The number was {result}')
+        time.sleep(0.1)
+        await ctx.send(f"You lost **{amount}**")
+        get_value(conn,c,user,loss)
+    else:
+        await ctx.send("I don't honestly know how this has happened but you broke it")
+
+
+
+  
+
+
 
 keep_alive()
 client.run(os.getenv('TOKEN'))
