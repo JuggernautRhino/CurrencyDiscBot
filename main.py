@@ -25,7 +25,7 @@ async def on_ready():
 
 @client.group(invoke_without_command = True)
 async def help(ctx):
-    user = str(ctx.message.author)
+    user = str(ctx.author)
     check(user)
     em = discord.Embed(title = "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀__Help__", description = "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀__**Do ^<Command> to use the command!**__", colour = 0x8ceb34)
     
@@ -42,7 +42,7 @@ async def _ping(ctx):
 
 @client.command(aliases=["bal"])
 async def balance(ctx):
-    user = str(ctx.message.author)
+    user = str(ctx.author)
     check(user)
     conn = sqlite3.connect('Bal.db')
     c = conn.cursor()
@@ -143,7 +143,11 @@ async def _yearly(ctx):
 
     save_yearly()
 
-#games to make money start here
+
+"""
+games to make money start here
+"""
+
 
 @client.command(aliases=["Coin","Flip","flip"])
 async def coin(ctx,guess = "0", amount = 0):
@@ -199,23 +203,32 @@ async def _numbergame(ctx,guess = 100, amount = 0):
 
 @client.command(aliases=["aboveorbelow"])
 async def _aboveorbelow(ctx):
-    targetint = random.randint(0,99)
-    idd = ctx.message.author.id
-    startmessage = ("There is a number between 0 and 99, guess it. NOW. You get 10 attempts", targetint)
+    user = str(ctx.message.author)
+    attempts = 0
+    targetint = random.randint(1,101)
+    idd = ctx.author.id
+    startmessage = ("There is a number between 1 and 100 inclusive, guess it. NOW. You get 10 attempts", targetint)
     await ctx.send(startmessage)
-    attempt1 = await client.wait_for("message", check=lambda m: m.guild == ctx.guild)
-    #the first bit works now
-    #same issue I think
-    #nah its a different error
-    #AttributeError: 'Message' object has no attribute 'user'
-    if ctx.author.id == idd:
-        attempt1int = int(attempt1.content)
-        if attempt1int == targetint:
-            await ctx.send("GG, you got it.")
-        elif attempt1int > targetint:
-            await ctx.send("Too high, try again.")
-        elif attempt1int < targetint:
-            await ctx.send("Too low, try again.")
+    while attempts != 10:
+        attempt1 = await client.wait_for("message", check=lambda m: m.guild == ctx.guild)
+        #now it just doesn't loop
+        #fixed
+        if ctx.author.id == idd:
+            attempt1int = int(attempt1.content)
+            if attempt1int == targetint:
+                await ctx.send("GG, you got it.")
+                conn,c = connection()
+                get_value(conn,c,user,(random.randint(50,300)))
+                attempts = 10
+                break
+            elif attempt1int > targetint:
+                await ctx.send("Too high, try again.")
+                attempts += 1
+            elif attempt1int < targetint:
+                await ctx.send("Too low, try again.")
+                attempts += 1
+
+
 
 
 

@@ -11,3 +11,6 @@ def get_value(conn,c,user,amount):
         value = value + int(amount)
         c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,user,))
         conn.commit()
+
+def get_inv(item,quantity):
+  
