@@ -3,7 +3,7 @@ import os
 from discord.ext import commands
 from Keep_alive import keep_alive
 import sqlite3
-from CreatingATable import tableCreation
+from CreatingATable import tableCreation, inv_tableCreation
 from Check_if_in_table import check
 from sqlie import connection, get_value
 from Daily import *
@@ -31,7 +31,7 @@ async def help(ctx):
     
     em.add_field(name = "⠀Owner", value = "add, sub, all⠀⠀⠀⠀⠀⠀⠀⠀")
     em.add_field(name = "⠀⠀⠀⠀⠀Currency", value = "bal, daily, monthly, yearly⠀⠀⠀⠀⠀⠀⠀⠀")
-    em.add_field(name = "⠀Games", value = "guess, flip")
+    em.add_field(name = "⠀⠀Games", value = "guess, flip, aob")
     await ctx.send(embed = em)
 
 @client.command(aliases=['ping'])
@@ -201,34 +201,83 @@ async def _numbergame(ctx,guess = 100, amount = 0):
 
 
 
-@client.command(aliases=["aboveorbelow"])
+@client.command(aliases=["aboveorbelow","aob"])
 async def _aboveorbelow(ctx):
     user = str(ctx.message.author)
     attempts = 0
-    targetint = random.randint(1,101)
-    idd = ctx.author.id
-    startmessage = ("There is a number between 1 and 100 inclusive, guess it. NOW. You get 10 attempts", targetint)
+    targetint = random.randint(1,100)
+    att = 0 + 1 
+    startmessage = ("There is a number between 1 and 100 inclusive, guess it. NOW. You get 10 attempts")
     await ctx.send(startmessage)
     while attempts != 10:
-        attempt1 = await client.wait_for("message", check=lambda m: m.guild == ctx.guild)
+        attempt = await client.wait_for("message", check=lambda m: m.author == ctx.message.author)
+        await ctx.send(f"You have had {att} attempts")
+        att = att + 1
         #now it just doesn't loop
         #fixed
-        if ctx.author.id == idd:
-            attempt1int = int(attempt1.content)
-            if attempt1int == targetint:
-                await ctx.send("GG, you got it.")
+        attemptint = int(attempt.content)
+        if attemptint == targetint:
+            value = (random.randint(50,300))
+            await ctx.send(f"GG, you got it. As a reward you get **{value}**.")
+            conn,c = connection()
+            get_value(conn,c,user,value)
+            conn.close()
+            attempts = 10
+            break
+        elif attemptint > targetint:
+            await ctx.send("Too high, try again.")
+            attempts += 1
+        elif attemptint < targetint:
+            await ctx.send("Too low, try again.")
+            attempts += 1
+    sendthingy = (f"You had so many chances, come on. It was {targetint}") # wait does this work, ima check
+    await ctx.send(sendthingy) #love the casual stab at the player   thanks lol                     yes
+
+
+
+@client.command(aliases=["blackjack"])
+async def _blackjack(ctx):
+  temp = random.randint(0,13)
+  otherhand1 
+
+
+"""
+Inventory system, aka stupid, over complicated idea
+"""
+
+
+@client.command(aliases=["inv"])
+async def _inv(ctx):
+  await ctx.send("")
+
+
+
+
+@help.command()
+async def bal(ctx):
+    em = discord.Embed(title="'bal' command help", description="shows ur balance dumbass")
+
+@client.command() 
+async def betteraob(ctx):
+    user = ctx.author
+    num = random.randint(0,101)
+    await ctx.send('0-100 inclusive. 10 goes. hurry up nad go')
+    for att in range(10):
+        await ctx.send(f'You have *{10-att}* goes left')
+        attempt = await client.wait_for("message", check=lambda m: m.author == user)
+        if attempt.author == user:
+            if attempt.content == str(num):
+                value = random.randint(50,300)
+                await ctx.send(f"GG, you got it. As a reward you get **{value}**.")
                 conn,c = connection()
-                get_value(conn,c,user,(random.randint(50,300)))
-                attempts = 10
-                break
-            elif attempt1int > targetint:
-                await ctx.send("Too high, try again.")
-                attempts += 1
-            elif attempt1int < targetint:
-                await ctx.send("Too low, try again.")
-                attempts += 1
-
-
+                get_value(conn,c,user,value)
+                conn.close()
+                return
+            elif int(attempt.content) > num:
+                await ctx.send('guess lower')
+            else:
+                await ctx.send('guess higher')
+    await ctx.send('u lost lol')
 
 
 

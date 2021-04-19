@@ -12,5 +12,6 @@ def get_value(conn,c,user,amount):
         c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,user,))
         conn.commit()
 
+#can be negative
 def get_inv(item,quantity):
-  
+    pass
