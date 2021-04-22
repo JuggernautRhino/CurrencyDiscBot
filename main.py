@@ -4,18 +4,25 @@ from discord.ext import commands
 from Keep_alive import keep_alive
 import sqlite3
 from CreatingATable import tableCreation, inv_tableCreation
-from Check_if_in_table import check
+from Check_if_in_table import *
 from sqlie import connection, get_value
 from Daily import *
 from Monthly import *
 from Yearly import *
-import time 
+from Gamle import rand_card
+from Gamle import checkcard
+from Shop import shop
+import time
 import math
 import random
+import yaml  #if it says yaml module not found use 'pip install PyYAML' in the shell    --fixed    added the pyyaml package in the package manager
+
 
 client = commands.Bot(command_prefix = "^")
 client.remove_command('help')
 ops = ["heads","tails"]
+value = []
+admin=['JuggernautRhino#0421', 'makky#9618', 'LifeIsForFun#9372']
 
 @client.event
 async def on_ready():
@@ -31,7 +38,7 @@ async def help(ctx):
     
     em.add_field(name = "⠀Owner", value = "add, sub, all⠀⠀⠀⠀⠀⠀⠀⠀")
     em.add_field(name = "⠀⠀⠀⠀⠀Currency", value = "bal, daily, monthly, yearly⠀⠀⠀⠀⠀⠀⠀⠀")
-    em.add_field(name = "⠀⠀Games", value = "guess, flip, aob")
+    em.add_field(name = "⠀⠀⠀Games", value = "guess, flip, aob, bj")
     await ctx.send(embed = em)
 
 @client.command(aliases=['ping'])
@@ -56,7 +63,7 @@ async def balance(ctx):
 @client.command(aliases=["add"])
 async def Add(ctx, amount):
     userr = str(ctx.message.author)
-    if userr == ("JuggernautRhino#0421"):
+    if userr in admin:
         conn = sqlite3.connect('Bal.db')
         c = conn.cursor()
         c.execute("SELECT balance FROM users WHERE user = ?",(userr,))
@@ -86,7 +93,7 @@ async def Remove(ctx, amount):
 @client.command()
 async def all(ctx):
     user = str(ctx.message.author)
-    if user == ("JuggernautRhino#0421"):
+    if user in admin:
         conn = sqlite3.connect("Bal.db")
         c = conn.cursor()
         c.execute("SELECT * FROM users")
@@ -199,78 +206,22 @@ async def _numbergame(ctx,guess = 100, amount = 0):
     else:
         await ctx.send("I don't honestly know how this has happened but you broke it")
 
-
-
-@client.command(aliases=["aboveorbelow","aob"])
-async def _aboveorbelow(ctx):
-    user = str(ctx.message.author)
-    attempts = 0
-    targetint = random.randint(1,100)
-    att = 0 + 1 
-    startmessage = ("There is a number between 1 and 100 inclusive, guess it. NOW. You get 10 attempts")
-    await ctx.send(startmessage)
-    while attempts != 10:
-        attempt = await client.wait_for("message", check=lambda m: m.author == ctx.message.author)
-        await ctx.send(f"You have had {att} attempts")
-        att = att + 1
-        #now it just doesn't loop
-        #fixed
-        attemptint = int(attempt.content)
-        if attemptint == targetint:
-            value = (random.randint(50,300))
-            await ctx.send(f"GG, you got it. As a reward you get **{value}**.")
-            conn,c = connection()
-            get_value(conn,c,user,value)
-            conn.close()
-            attempts = 10
-            break
-        elif attemptint > targetint:
-            await ctx.send("Too high, try again.")
-            attempts += 1
-        elif attemptint < targetint:
-            await ctx.send("Too low, try again.")
-            attempts += 1
-    sendthingy = (f"You had so many chances, come on. It was {targetint}") # wait does this work, ima check
-    await ctx.send(sendthingy) #love the casual stab at the player   thanks lol                     yes
-
-
-
-@client.command(aliases=["blackjack"])
-async def _blackjack(ctx):
-  temp = random.randint(0,13)
-  otherhand1 
-
-
-"""
-Inventory system, aka stupid, over complicated idea
-"""
-
-
-@client.command(aliases=["inv"])
-async def _inv(ctx):
-  await ctx.send("")
-
-
-
-
-@help.command()
-async def bal(ctx):
-    em = discord.Embed(title="'bal' command help", description="shows ur balance dumbass")
-
-@client.command() 
-async def betteraob(ctx):
-    user = ctx.author
-    num = random.randint(0,101)
+@client.command(aliases=['aboveorbelow','aob']) 
+async def _aob(ctx):
+    user = ctx.author # oh shoot i didn't realise you didnt have to put .message.
+    num = random.randint(0,100)
     await ctx.send('0-100 inclusive. 10 goes. hurry up nad go')
     for att in range(10):
-        await ctx.send(f'You have *{10-att}* goes left')
+        await ctx.send(f'You have **`{10-att}`** goes left')
         attempt = await client.wait_for("message", check=lambda m: m.author == user)
         if attempt.author == user:
+            if att == 9: 
+                break
             if attempt.content == str(num):
                 value = random.randint(50,300)
-                await ctx.send(f"GG, you got it. As a reward you get **{value}**.")
+                await ctx.send(f"GG, you got it. As a reward you get **`{value}`**.")
                 conn,c = connection()
-                get_value(conn,c,user,value)
+                get_value(conn,c,str(user),value)
                 conn.close()
                 return
             elif int(attempt.content) > num:
@@ -278,6 +229,164 @@ async def betteraob(ctx):
             else:
                 await ctx.send('guess higher')
     await ctx.send('u lost lol')
+
+#cardgames start here
+
+@client.command(aliases=["blackjack","bj"])
+async def _blackjack(ctx, amount = 0):
+    handvalue = 0
+    otherhandvalue = 0
+    temp = random.randint(1,13)
+    otherhand1 = temp
+    temp = random.randint(1,13)
+    otherhand2 = temp
+    temp = random.randint(1,13)
+    hand1 = temp
+    temp = random.randint(1,13)
+    hand2 = temp
+    if amount != 0:
+        if hand1 == 11:
+            hand1out = ("a Jack")
+        elif hand1 == 12:
+            hand1out = ("a Queen")
+        elif hand1 == 13:
+            hand1out = ("a King")   
+        elif hand1 == 1:
+            hand1out = ("an Ace")
+        else:
+            hand1out = str(hand1)
+        if hand2 == 11:
+            hand2out = ("a Jack")
+        elif hand2 == 12:
+            hand2out = ("a Queen")
+        elif hand2 == 13:
+            hand2out = ("a King")
+        elif hand2 == 1:
+            hand2out = ("an Ace")
+        else:
+            hand2out = str(hand2)
+
+        em = discord.Embed(title="BlackJack", description=f"Your hand is **{hand1out}** and **{hand2out}**", colour = 0xb3f542)
+        await ctx.send(embed = em)
+        if hand1 > 10:
+            handvalue += 10
+        elif hand1 == 1:
+            handvalue += 11 # or 1, sort it out later
+        else:
+            handvalue += hand1
+        if hand2 > 10:
+            handvalue += 10
+        elif hand2 == 1:
+            handvalue += 11
+        else:
+            handvalue += hand2
+        if otherhand1 > 10:
+            otherhandvalue += 10
+        elif otherhand1 == 1:
+            otherhandvalue += 11
+        else:
+            otherhandvalue += otherhand1
+        if otherhand2 > 10:
+            otherhandvalue += 10
+        elif otherhand2 == 1:
+            otherhandvalue += 11
+        else:
+            otherhandvalue += otherhand2
+        if otherhandvalue > handvalue:
+            await ctx.send(f"You have failed, the opponent had {otherhandvalue} and you only had {handvalue}")
+            conn,c = connection()
+            user = ctx.author
+            loss = amount * -1
+            get_value(conn,c,user,loss)
+            conn.close()
+        elif handvalue > otherhandvalue:
+            await ctx.send(f"You have succeeded, the opponent had {otherhandvalue} and you had {handvalue}")
+            conn,c = connection()
+            user = ctx.author
+            win = amount * 2
+            get_value(conn,c,user,win)
+            conn.close()
+        elif handvalue == otherhandvalue:
+            await ctx.send(f"You drew, you both had {handvalue}")
+        else:
+          await ctx.send(f"Why am I so bad at avoiding bugs?")
+    else:
+      await ctx.send(f"You need to actually bet something you know")
+
+
+
+@client.command(aliases=['pont','pontune'])
+async def _pontune(ctx, amount=50):
+    user = ctx.author
+    firstcard = str(rand_card()) 
+    secondcard = str(rand_card())
+    ace = None
+    temp = firstcard
+    em = discord.Embed(title=':diamonds::hearts:Pontune:clubs::spades:', description='These are your **first** cards. Would you like to **`twist`** (+1 card) or **`stick`** (finish your turn without picking up a card)?', colour=ctx.author.colour)
+    em.add_field(name='Card 1:', value=f"{firstcard}")#oka im dum
+    em.add_field(name='Card 2:', value=f"{secondcard}")
+    for i in range(2):
+        if 'Ace' in firstcard:
+            await ctx.send(f'You have a {firstcard} and a {secondcard} in your hand! Is the ace a 1 or an 11?')
+            ace = await client.wait_for("message", check=lambda m: m.author == user) #  omg im actually stupid omfg  
+    em.add_field(name='total value:', value=checkcard(firstcard,secondcard,ace))
+
+    await ctx.send(embed=em)
+
+
+#inv starts here
+#if you want then you can copy anything you want from blackjack, idk if it helps at all but still
+
+@client.command(aliases=["inv"])
+async def _inv(ctx):
+    user = ctx.author
+    conn,c = connection()
+    result = check_inv(user,conn,c)
+    if result is None:
+        await ctx.send("Created Your Inv, please use this command again to show it!")
+    else:
+        await ctx.send(result[::])
+
+@client.command(aliases = ["shop"])
+async def Shop(ctx):
+    user = ctx.author
+    em = discord.Embed(title = f"{user}'s shop!", description = f"{yaml.dump(shop)}", colour = 0xb3f542)
+    await ctx.send(embed = em)
+
+@client.command(aliases=["b"])
+async def buy(ctx,item = "0"):
+    user = ctx.author
+    if item == "0":
+        await ctx.send("Please specify an item!")
+    else:
+        if item in shop:
+            print("")
+            #need to remove the amount and give it to User
+        elif item not in shop:
+            await ctx.send("**Please specify an item that you can actually buy!**")
+
+
+
+@help.command(aliases=['ping'])
+async def _ping(ctx):
+    em = discord.Embed(title="'ping' command help", description="Returns the bot's latency", colour=ctx.author.colour)
+    await ctx.send(embed=em)
+
+@help.command(aliases=['bal','balance'])
+async def _balance(ctx):
+    em = discord.Embed(title="'bal' command help", description="shows ur balance, idiot", colour = 0xb3f542)
+    await ctx.send(embed = em)
+
+@help.command(aliases=['add'])
+async def no_perms(ctx):
+    user = ctx.author
+    if user not in admin:    
+        await ctx.send(f"{user.mention} you don't have perms lol :joy:")
+    elif user in admin:
+        await ctx.send("It's kinda obvious what this does :joy:")
+    else:
+        await ctx.send("gg you broke me")
+
 
 
 
