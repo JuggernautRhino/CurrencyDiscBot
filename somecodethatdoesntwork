@@ -1,0 +1,481 @@
+def get_inv(conn,c,user,item,itemnum)
+itemnum = "0"
+    num = 0
+    ha = c.fetchone()
+    while ha != None:
+        item = "item"
+        num = num + 1
+        num = str(num)
+        itemnum = item + num
+        num = int(num)
+        try:
+            c.execute("SELECT ? FROM inv WHERE user = ?",(itemnum,user,)) # i really want to get this one working but i wont lol    what it doo?  selects the nearest place to the start with a null value
+            
+        except:
+            break
+        c.execute("UPDATE inv SET ? = ? WHERE user = ? ",(itemnum,item,user,))  # idk how to get it that it puts it in a unspecified place :/
+        conn.commit()
+
+
+
+
+
+def get_inv(
+    conn, c, user, itemm, ctx
+):  #lolz, sorry i had to put it in somecodetahtdoesntwork lol        oka
+    global result
+    result = "Something"
+    item = "item"
+    if result != None:
+        num = 1
+        num = str(num)
+        itemnum = item + num
+        num = int(num)
+        c.execute("SELECT ? FROM inv WHERE user = ?", (
+            itemnum,
+            user,
+        ))
+        result = c.fetchone()
+        if result != None:  #1
+            num = num + 1
+            num = str(num)
+            itemnum = item + num
+            num = int(num)
+            c.execute("SELECT ? FROM inv WHERE user = ?", (
+                itemnum,
+                user,
+            ))
+            result = c.fetchone()
+            if result != None:  #2
+                num = num + 1
+                num = str(num)
+                itemnum = item + num
+                num = int(num)
+                c.execute("SELECT ? FROM inv WHERE user = ?", (
+                    itemnum,
+                    user,
+                ))
+                result = c.fetchone()
+                if result != None:  #3
+                    num = num + 1
+                    num = str(num)
+                    itemnum = item + num
+                    num = int(num)
+                    c.execute("SELECT ? FROM inv WHERE user = ?", (
+                        itemnum,
+                        user,
+                    ))
+                    result = c.fetchone()
+                    if result != None:  #4
+                        num = num + 1
+                        num = str(num)
+                        itemnum = item + num
+                        num = int(num)
+                        c.execute("SELECT ? FROM inv WHERE user = ?", (
+                            itemnum,
+                            user,
+                        ))
+                        result = c.fetchone()
+                        if result != None:  #5
+                            num = num + 1
+                            num = str(num)
+                            itemnum = item + num
+                            num = int(num)
+                            c.execute("SELECT ? FROM inv WHERE user = ?", (
+                                itemnum,
+                                user,
+                            ))
+                            result = c.fetchone()
+                            if result != None:  #6
+                                num = num + 1
+                                num = str(num)
+                                itemnum = item + num
+                                num = int(num)
+                                c.execute("SELECT ? FROM inv WHERE user = ?", (
+                                    itemnum,
+                                    user,
+                                ))
+                                result = c.fetchone()
+                                if result != None:  #7
+                                    num = num + 1
+                                    num = str(num)
+                                    itemnum = item + num
+                                    num = int(num)
+                                    c.execute("SELECT ? FROM inv WHERE user = ?", (
+                                        itemnum,
+                                        user,
+                                    ))
+                                    result = c.fetchone()
+                                    if result != None:  #8
+                                        num = num + 1
+                                        num = str(num)
+                                        itemnum = item + num
+                                        num = int(num)
+                                        c.execute(
+                                            "SELECT ? FROM inv WHERE user = ?", (
+                                                itemnum,
+                                                user,
+                                            ))
+                                        result = c.fetchone()
+                                        if result != None:  #9
+                                            num = num + 1
+                                            num = str(num)
+                                            itemnum = item + num
+                                            num = int(num)
+                                            c.execute(
+                                                "SELECT ? FROM inv WHERE user = ?",
+                                                (
+                                                    itemnum,
+                                                    user,
+                                                ))
+                                            result = c.fetchone()
+                                            if result != None:  #10
+                                                num = num + 1
+                                                num = str(num)
+                                                itemnum = item + num
+                                                num = int(num)
+                                                c.execute(
+                                                    "SELECT ? FROM inv WHERE user = ?",
+                                                    (
+                                                        itemnum,
+                                                        user,
+                                                    ))
+                                                result = c.fetchone()
+                                                if result != None:  #11
+                                                    num = num + 1
+                                                    num = str(num)
+                                                    itemnum = item + num
+                                                    num = int(num)
+                                                    c.execute(
+                                                        "SELECT ? FROM inv WHERE user = ?",
+                                                        (
+                                                           itemnum,
+                                                            user,
+                                                        ))
+                                                    result = c.fetchone()
+                                                    if result != None:  #12
+                                                        num = num + 1
+                                                        num = str(num)
+                                                        itemnum = item + num
+                                                        num = int(num)
+                                                        c.execute(
+                                                            "SELECT ? FROM inv WHERE user = ?",
+                                                            (
+                                                                itemnum,
+                                                                user,
+                                                            ))
+                                                        result = c.fetchone()
+                                                        if result != None:  #13
+                                                            num = num + 1
+                                                            num = str(num)
+                                                            itemnum = item + num
+                                                            num = int(num)
+                                                            c.execute(
+                                                                "SELECT ? FROM inv WHERE user = ?",
+                                                                (
+                                                                   itemnum,
+                                                                    user,
+                                                                ))
+                                                            result = c.fetchone()
+                                                            if result != None:  #14
+                                                                num = num + 1
+                                                                num = str(num)
+                                                                itemnum = item + num
+                                                                num = int(num)
+                                                                c.execute(
+                                                                    "SELECT ? FROM inv WHERE user = ?",
+                                                                    (
+                                                                        itemnum,
+                                                                        user,
+                                                                    ))
+                                                                result = c.fetchone(
+                                                                )
+                                                                if result != None:  #15
+                                                                    num = num + 1
+                                                                    num = str(num)
+                                                                    itemnum = item + num
+                                                                    num = int(num)
+                                                                    c.execute(
+                                                                        "SELECT ? FROM inv WHERE user = ?",
+                                                                        (
+                                                                            itemnum,
+                                                                            user,
+                                                                        ))
+                                                                    result = c.fetchone(
+                                                                    )
+                                                                    if result != None:  #16
+                                                                        num = num + 1
+                                                                        num = str(num)
+                                                                        itemnum = item + num
+                                                                        num = int(num)
+                                                                        c.execute(
+                                                                            "SELECT ? FROM inv WHERE user = ?",
+                                                                            (
+                                                                                itemnum,
+                                                                                user,
+                                                                            ))
+                                                                        result = c.fetchone(
+                                                                        )
+                                                                        if result != None:  #17
+                                                                            num = num + 1
+                                                                            num = str(num)
+                                                                            itemnum = item + num
+                                                                            num = int(num)
+                                                                            c.execute(
+                                                                                "SELECT ? FROM inv WHERE user = ?",
+                                                                                (
+                                                                                    itemnum,
+                                                                                    user,
+                                                                                ))
+                                                                            result = c.fetchone(
+                                                                            )
+                                                                            if result != None:  #18
+                                                                                num = num + 1
+                                                                                num = str(num)
+                                                                                itemnum = item + num
+                                                                                num = int(num)
+                                                                                c.execute(
+                                                                                    "SELECT ? FROM inv WHERE user = ?",
+                                                                                    (
+                                                                                        itemnum,
+                                                                                        user,
+                                                                                    )
+                                                                                )
+                                                                                result = c.fetchone(
+                                                                                )
+                                                                                if result != None:  #19
+                                                                                    num = num + 1
+                                                                                    num = str(num)
+                                                                                    itemnum = item + num
+                                                                                    num = int(num)
+                                                                                    c.execute(
+                                                                                        "SELECT ? FROM inv WHERE user = ?",
+                                                                                        (
+                                                                                            itemnum,
+                                                                                            user,
+                                                                                        )
+                                                                                    )
+                                                                                    result = c.fetchone(
+                                                                                    )
+                                                                                    if result != None:  #20
+                                                                                        num = num + 1
+                                                                                        num = str(num)
+                                                                                        itemnum = item + num
+                                                                                        num = int(num)
+                                                                                        c.execute(
+                                                                                            "SELECT ? FROM inv WHERE user = ?",
+                                                                                            (
+                                                                                                itemnum,
+                                                                                                user,
+                                                                                            )
+                                                                                        )
+                                                                                        result = c.fetchone(
+                                                                                        )
+                                                                                        if result != None:  #21
+                                                                                            num = num + 1
+                                                                                            num = str(num)
+                                                                                            itemnum = item + num
+                                                                                            num = int(num)
+                                                                                            c.execute(
+                                                                                                "SELECT ? FROM inv WHERE user = ?",
+                                                                                                (
+                                                                                                    itemnum,
+                                                                                                    user,
+                                                                                                )
+                                                                                            )
+                                                                                            result = c.fetchone(
+                                                                                            )
+                                                                                            if result != None:  #22
+                                                                                                num = num + 1
+                                                                                                num = str(num)
+                                                                                                itemnum = item + num
+                                                                                                num = int(num)
+                                                                                                c.execute(
+                                                                                                    "SELECT ? FROM inv WHERE user = ?",
+                                                                                                    (
+                                                                                                        itemnum,
+                                                                                                        user,
+                                                                                                    )
+                                                                                                )
+                                                                                                result = c.fetchone(
+                                                                                                )
+                                                                                                if result != None:  #23
+                                                                                                    num = num + 1
+                                                                                                    num = str(num)
+                                                                                                    itemnum = item + num
+                                                                                                    num = int(num)
+                                                                                                    c.execute(
+                                                                                                        "SELECT ? FROM inv WHERE user = ?",
+                                                                                                        (
+                                                                                                            itemnum,
+                                                                                                            user,
+                                                                                                        )
+                                                                                                    )
+                                                                                                    result = c.fetchone(
+                                                                                                    )
+                                                                                                    if result != None:  #24
+                                                                                                        num = num + 1
+                                                                                                        num = str(num)
+                                                                                                        itemnum = item + num
+                                                                                                        num = int(num)
+                                                                                                        c.execute(
+                                                                                                            "SELECT ? FROM inv WHERE user = ?",
+                                                                                                            (
+                                                                                                                itemnum,
+                                                                                                                user,
+                                                                                                            )
+                                                                                                        )
+                                                                                                        result = c.fetchone(
+                                                                                                        )           
+                                                                                            else:
+                                                                                                c.execute(
+                                                                                                    "UPDATE inv SET item23 = ? WHERE user = ? ",
+                                                                                                    (
+                                                                                                        itemm,
+                                                                                                        user,
+                                                                                                    )
+                                                                                                )
+                                                                                        else:
+                                                                                            c.execute(
+                                                                                                "UPDATE inv SET item22 = ? WHERE user = ? ",
+                                                                                                (
+                                                                                                    itemm,
+                                                                                                    user,
+                                                                                                )
+                                                                                            )
+                                                                                    else:
+                                                                                        c.execute(
+                                                                                            "UPDATE inv SET item21 = ? WHERE user = ? ",
+                                                                                            (
+                                                                                                itemm,
+                                                                                                user,
+                                                                                            )
+                                                                                        )
+                                                                                else:
+                                                                                    c.execute(
+                                                                                        "UPDATE inv SET item20 = ? WHERE user = ? ",
+                                                                                        (
+                                                                                            itemm,
+                                                                                            user,
+                                                                                        )
+                                                                                    )
+                                                                            else:
+                                                                                c.execute(
+                                                                                    "UPDATE inv SET item19 = ? WHERE user = ? ",
+                                                                                    (
+                                                                                        itemm,
+                                                                                        user,
+                                                                                    )
+                                                                                )
+                                                                        else:
+                                                                            c.execute(
+                                                                                "UPDATE inv SET item18 = ? WHERE user = ? ",
+                                                                                (
+                                                                                    itemm,
+                                                                                    user,
+                                                                                ))
+                                                                    else:
+                                                                        c.execute(
+                                                                            "UPDATE inv SET item17 = ? WHERE user = ? ",
+                                                                            (
+                                                                                itemm,
+                                                                                user,
+                                                                            ))
+                                                                else:
+                                                                    c.execute(
+                                                                        "UPDATE inv SET item16 = ? WHERE user = ? ",
+                                                                        (
+                                                                            itemm,
+                                                                            user,
+                                                                        ))
+                                                            else:
+                                                                c.execute(
+                                                                    "UPDATE inv SET item15 = ? WHERE user = ? ",
+                                                                    (
+                                                                        itemm,
+                                                                        user,
+                                                                    ))
+                                                        else:
+                                                            c.execute(
+                                                                "UPDATE inv SET item14 = ? WHERE user = ? ",
+                                                                (
+                                                                    itemm,
+                                                                    user,
+                                                                ))
+                                                    else:
+                                                        c.execute(
+                                                            "UPDATE inv SET item13 = ? WHERE user = ? ",
+                                                            (
+                                                                itemm,
+                                                                user,
+                                                            ))
+                                                else:
+                                                    c.execute(
+                                                        "UPDATE inv SET item12 = ? WHERE user = ? ",
+                                                        (
+                                                            itemm,
+                                                            user,
+                                                        ))
+                                            else:
+                                                c.execute(
+                                                    "UPDATE inv SET item11 = ? WHERE user = ? ",
+                                                    (
+                                                        itemm,
+                                                        user,
+                                                    ))
+                                        else:
+                                            c.execute(
+                                                "UPDATE inv SET item10 = ? WHERE user = ? ",
+                                                (
+                                                    itemm,
+                                                    user,
+                                                ))
+                                    else:
+                                        c.execute(
+                                            "UPDATE inv SET item9 = ? WHERE user = ? ",
+                                            (
+                                                itemm,
+                                                user,
+                                            ))
+                                else:
+                                    c.execute(
+                                        "UPDATE inv SET item8 = ? WHERE user = ? ",
+                                        (
+                                            itemm,
+                                            user,
+                                        ))
+                            else:
+                                c.execute(
+                                    "UPDATE inv SET item7 = ? WHERE user = ? ", (
+                                        itemm,
+                                        user,
+                                    ))
+                        else:
+                            c.execute("UPDATE inv SET item6 = ? WHERE user = ? ", (
+                                itemm,
+                                user,
+                            ))
+                    else:
+                        c.execute("UPDATE inv SET item5 = ? WHERE user = ? ", (
+                            itemm,
+                            user,
+                        ))
+                else:
+                    c.execute("UPDATE inv SET item4 = ? WHERE user = ? ", (
+                        itemm,
+                        user,
+                    ))
+            else:
+                c.execute("UPDATE inv SET item3 = ? WHERE user = ? ", (
+                    itemm,
+                    user,
+                ))
+        else:
+            c.execute("UPDATE inv SET item2 = ? WHERE user = ? ", (
+                itemm,
+                user,
+            ))
+    else:
+        c.execute("UPDATE inv SET item1 = ? WHERE user = ?",(itemm,user,))
+    print(result)
+    conn.commit()

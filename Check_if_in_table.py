@@ -17,6 +17,7 @@ def check(user):
         score = 0
         c.execute("INSERT INTO users VALUES (?,?)", (user,score))
         conn.commit()
+        conn.close()
 
 def check_inv(user,conn,c):
     user = str(user)
@@ -31,27 +32,35 @@ def check_inv(user,conn,c):
     result = c.fetchone()
 
     if result:
-        conn.close()
+        c.execute("SELECT * FROM inv WHERE user = ?",(user,))
+        result = c.fetchall()
+        return result
     else:
         sqlite_insert_with_param = "INSERT INTO inv (user) VALUES (?);"
         data_tuple = (user,)
         c.execute(sqlite_insert_with_param, data_tuple)
         conn.commit()  
         conn.close()
-    return result
+        c.execute("SELECT * FROM inv WHERE user = ?",(user,))
+        result = c.fetchall()
+        return result
 
 
 
-def nulltype(user,conn,c):
+def null_type(user,conn,c):
+    itemnum = "0"
     num = 0
-    while 0 != True:
+    ha = c.fetchone()
+    while ha != None:
         item = "item"
         num = num + 1
         num = str(num)
         itemnum = item + num
+        num = int(num)
         try:
-            print("")
+            c.execute("SELECT ? FROM inv WHERE user = ?",(itemnum,user,))
         except:
             break
+    return itemnum
 
     

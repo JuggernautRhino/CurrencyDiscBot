@@ -9,22 +9,16 @@ def rand_card():
         card = speccards[3]
     else:
         card=int(card)+1
-    return card
+    return card #idk why but seeing a red cursor just sitting here was terrifying
 
-def checkcard(card,card2,ace=0):
+def checkcard(card,card2,ace:str):
     cardval = 0
-    speccards={'Jack': 10, 'Queen': 10, 'King': 10}
-    for i in range(2):    
-        try:
-            cardval = int(card) + cardval
-        except:
-            if card != 'Ace':
-                cardval = speccards[card] + cardval 
-        if ace == 0: continue
-        elif ace != 0:
-            if ace == 1:
-                cardval=cardval+1
-            elif ace == 11:
-                cardval=cardval+11
-        card=str(card2)
+    temp = card
+    cards={'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':10,'Jack': 10, 'Queen': 10, 'King': 10}
+    for i in range(2):
+        if 'Ace' in temp:
+            cardval = cardval + int(ace)
+        else:
+            cardval = cardval + cards[temp]
+        temp = card2
     return cardval

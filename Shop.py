@@ -1,7 +1,7 @@
 shop = {
 
     "Frog" : 2500,
-    "Bilbo Baggings" : 5000,
+    "Bilbo Baggins" : 5000,
     "Super Awesome Power of Awesomeness" : 150000,
     "Money Multiplier" : 400000,
     "A Greggs Pasty" : 1000,
