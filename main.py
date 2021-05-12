@@ -5,7 +5,7 @@ from Keep_alive import keep_alive
 import sqlite3
 from CreatingATable import tableCreation, inv_tableCreation
 from Check_if_in_table import *
-from sqlie import connection, get_value,get_inv
+from sqlie import connection, get_value,get_inv,buy,sell
 from Daily import *
 from Monthly import *
 from Yearly import *
@@ -422,7 +422,7 @@ async def buy(ctx,item1 = "0",item2 = "0",item3 ="0",item4 = "0", item5 = "0",it
             conn,c = connection()
             value = shop[item]
             get_value(conn,c,user,value)
-            get_inv(conn,c,user,item)  #<-- this is the thing that i need to do first
+            await buy(conn,c,user,item)  #<-- this is the thing that i need to do first
             await ctx.send("Test Message **(means succesful purchase when completed)**")
             #need to remove the amount and give it to User
         elif item not in shop:

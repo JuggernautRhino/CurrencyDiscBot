@@ -39,7 +39,18 @@ def get_inv(conn,c,user,iitem):
 #this is mad
         except:
             break
-    print(itemnum)                        
+    return itemnum                        
+    
+def buy(conn,c,user,item):
+    itemnum = get_inv(conn,c,user,item)
     buying = "UPDATE inv SET "+itemnum+" = ? WHERE user = ? "
-    c.execute(buying, (iitem,user,))
+    c.execute(buying, (item,user,))
+    conn.commit()
+
+
+def sell(conn,c,user):
+    itemnum = get_inv(conn,c,user,item)
+    itemnum = itemnum - 1
+    selling = "UPDATE inv SET "+itemnum+" = ? WHERE user = ? "
+    c.execute(selling, (None,user,))
     conn.commit()
