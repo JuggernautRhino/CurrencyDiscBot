@@ -34,8 +34,8 @@ def get_inv(conn,c,user,iitem):
             buying = "SELECT "+itemnum+" FROM inv WHERE user = ?"
             c.execute(buying, (user,))
 
-            ha = c.fetchone()#omg did i just find an actual use for a do-while loop   
-            print(ha.replace("('","").replace("',)",""))#possibly      
+            ha = c.fetchone()#omg did i just find an actual use for a do-while loop   -- guess not
+            print(ha)#possibly      
 #this is mad
         except:
             break

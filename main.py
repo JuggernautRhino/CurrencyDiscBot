@@ -23,7 +23,7 @@ client = commands.Bot(command_prefix = "^")
 client.remove_command('help')
 ops = ["heads","tails"]
 value = []
-admin=['JuggernautRhino#0421', 'makky#9618', 'LifeIsForFun#9372']
+admin=['JuggernautRhino#0421', 'LifeIsForFun#9372']
 
 @client.event
 async def on_ready():
@@ -65,15 +65,18 @@ async def balance(ctx):
 async def Add(ctx, amount):
     userr = str(ctx.message.author)
     if userr in admin:
-        conn = sqlite3.connect('Bal.db')
-        c = conn.cursor()
-        c.execute("SELECT balance FROM users WHERE user = ?",(userr,))
-        for row in c.fetchall():
-            value = row[0]
-        value = value + int(amount)
-        await ctx.send(f'You now have **{value}** in your account!')
-        c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,userr,))
-        conn.commit()
+        try:
+            conn = sqlite3.connect('Bal.db')
+            c = conn.cursor()
+            c.execute("SELECT balance FROM users WHERE user = ?",(userr,))
+            for row in c.fetchall():
+                value = row[0]
+            value = value + int(amount)
+            await ctx.send(f'You now have **{value}** in your account!')
+            c.execute("UPDATE users SET balance = ? WHERE user = ? ",(value,userr,))
+            conn.commit()
+        except OverflowError:
+            await ctx.send("Bruh, you know thats too large")
     elif userr != ("JuggernautRhino#0421"):
         await ctx.send("nice try")
 
@@ -400,10 +403,10 @@ async def Shop(ctx):
 
 @client.command()
 async def check(ctx):
-    user = str(ctx.author)
+    user = ctx.author
     conn,c=connection()
     hi = str("item1")
-    c.execute("SELECT item1 FROM inv WHERE user = ?",(user,))
+    c.execute("SELECT item1 FROM inv WHERE user = ?",(str(user),))
     ha = c.fetchone()
     await ctx.send(ha)
     print(ha)
@@ -426,8 +429,7 @@ async def buy(ctx,item1 = "0",item2 = "0",item3 ="0",item4 = "0", item5 = "0",it
             await ctx.send("**Please specify an item that you can actually buy!**")
             
 
-
-
+            
 @help.command(aliases=['ping'])
 async def __ping(ctx):
     em = discord.Embed(title="'ping' command help", description="Returns the bot's latency", colour=ctx.author.colour)
@@ -443,7 +445,8 @@ async def no_perms(ctx):
     user = ctx.author
     if str(user) not in admin:
         await ctx.send(f"{user.mention} you don't have perms for admin commands :joy:")
-    
+
+
 keep_alive()
 client.run(os.environ['TOKEN'])
 
