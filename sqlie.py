@@ -39,18 +39,32 @@ def get_inv(conn,c,user,iitem):
 #this is mad
         except:
             break
-    return itemnum                        
-    
-def buy(conn,c,user,item):
-    itemnum = get_inv(conn,c,user,item)
+    print(itemnum)                        
     buying = "UPDATE inv SET "+itemnum+" = ? WHERE user = ? "
-    c.execute(buying, (item,user,))
+    c.execute(buying, (iitem,user,))
     conn.commit()
 
+def sell(conn,c,user,iitem):
+    num = 0
+    ha = "aaaaaaa"
+    while ha != (None,):
+        item = "item"
+        num = num + 1
+        num = str(num)
+        global itemnum
+        itemnum = str(item + num)
+        num = int(num)
+        try:
+            buying = "SELECT "+itemnum+" FROM inv WHERE user = ?"
+            c.execute(buying, (user,))
 
-def sell(conn,c,user):
-    itemnum = get_inv(conn,c,user,item)
+            ha = c.fetchone()#omg did i just find an actual use for a do-while loop   -- guess not
+            print(ha)#possibly      
+#this is mad
+        except:
+            break
     itemnum = itemnum - 1
-    selling = "UPDATE inv SET "+itemnum+" = ? WHERE user = ? "
-    c.execute(selling, (None,user,))
+    print(itemnum)                        
+    buying = "UPDATE inv SET "+itemnum+" = ? WHERE user = ? "
+    c.execute(buying, (iitem,user,))
     conn.commit()
