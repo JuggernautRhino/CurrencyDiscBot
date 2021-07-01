@@ -16,8 +16,7 @@ from thing import make_a_word
 import time
 import math
 import random
-import yaml  #if it says yaml module not found use 'pip install PyYAML' in the shell    --fixed    added the pyyaml package in the package manager
-
+import yaml 
 
 client = commands.Bot(command_prefix = "^")
 client.remove_command('help')
